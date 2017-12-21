@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="org.connectbot:sshlib:2.2.5@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.connectbot/sshlib/2.2.5/6988fb30d7c86c3a24dc76f2593426555c7856f3/sshlib-2.2.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.connectbot/sshlib/2.2.5/4e653a77c7472ff6f31909c17fe9a00c71b83113/sshlib-2.2.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

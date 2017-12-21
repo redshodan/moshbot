@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="org.connectbot:simplesocks:1.0.1@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.connectbot/simplesocks/1.0.1/2feeddb5eeb63056e2d622e988c569cc57dc144b/simplesocks-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.connectbot/simplesocks/1.0.1/646136df23543387f8ebbcb0d4bd70b5c095af79/simplesocks-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

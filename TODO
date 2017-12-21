@@ -1,0 +1,3 @@
+- Clean up keys in .travis.yml, AndroidManifest.xml
+- change res graphics to mipmaps? semes like that's the new android way
+- Figure out new style res crap and adapt

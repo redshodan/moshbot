@@ -1,0 +1,14 @@
+The following binaries are included: busybox + mosh
+
+They are built using the Android Ports environment.
+
+To rebuild busybox, see http://blog.dan.drown.org/busyboxandroid-build-vm/
+To rebuild mosh (and its libs), see http://blog.dan.drown.org/moshandroid-build-vm/
+
+Their sources come from:
+libngustl-static - android NDK
+ncurses          - https://github.com/ddrown/irssiconnectbot-ncurses
+protobuf         - https://github.com/ddrown/irssiconnectbot-protobuf
+mosh             - https://github.com/ddrown/mosh
+openssl		 - https://github.com/ddrown/openssl
+busybox          - https://github.com/ddrown/busybox
