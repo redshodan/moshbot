@@ -24,7 +24,6 @@ buildscript {
 
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.2'
-
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     testImplementation 'org.assertj:assertj-core:1.7.0'
@@ -121,6 +120,10 @@ dependencies {
         }
     }
     buildToolsVersion '26.0.2'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 def getGitDescription = { ->
