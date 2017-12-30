@@ -25,6 +25,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 
 #include "android/log.h"
 
