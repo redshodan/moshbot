@@ -18,7 +18,7 @@
  */
 -->
 
-<RelativeLayout
+<android.widget.RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -60,7 +60,7 @@
 		android:layout_below="@id/toolbar"
 		/>
 
-	<RelativeLayout
+	<android.widget.RelativeLayout
 		android:id="@+id/console_password_group"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -90,9 +90,9 @@
 			android:singleLine="true"
 			/>
 
-	</RelativeLayout>
+	</android.widget.RelativeLayout>
 
-	<RelativeLayout
+	<android.widget.RelativeLayout
 		android:id="@+id/console_boolean_group"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -139,8 +139,8 @@
 			android:text="@string/button_yes"
 			/>
 
-	</RelativeLayout>
+	</android.widget.RelativeLayout>
 
 	<include layout="@layout/inc_keyboard" />
 
-</RelativeLayout>
+</android.widget.RelativeLayout>

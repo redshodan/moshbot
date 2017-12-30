@@ -38,10 +38,12 @@ import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelXorXfermode;
+//import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -139,7 +141,9 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 		cursorPaint = new Paint();
 		cursorPaint.setColor(bridge.color[bridge.defaultFg]);
-		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[bridge.defaultBg]));
+//		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[bridge.defaultBg]));
+// TODO: erm, yeah? this work instead of PixelXor?
+		cursorPaint.setColorFilter(new ColorMatrixColorFilter(getColorMatrix()));
 		cursorPaint.setAntiAlias(true);
 
 		cursorStrokePaint = new Paint(cursorPaint);
@@ -253,6 +257,15 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				viewPager.performClick();
 				return super.onSingleTapConfirmed(e);
 			}
+		});
+	}
+
+	private ColorMatrix getColorMatrix() {
+		return new ColorMatrix(new float[] {
+				-1,  0,  0,  0, 255,
+				0, -1,  0,  0, 255,
+				0,  0, -1,  0, 255,
+				0,  0,  0,  1,   0
 		});
 	}
 

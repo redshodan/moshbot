@@ -18,7 +18,7 @@
  */
 -->
 
-<RelativeLayout
+<android.widget.RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
@@ -121,4 +121,4 @@
 
 	<include layout="@layout/inc_keyboard" />
 
-</RelativeLayout>
+</android.widget.RelativeLayout>

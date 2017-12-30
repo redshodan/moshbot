@@ -1,4 +1,38 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.kt3k.coveralls'
+apply from: '../config/quality.gradle'
+apply from: '../config/translations.gradle'
+apply from: '../config/jacoco.gradle'
+
+ext {
+    supportLibraryVersion = '26.1.0'
+    testRunnerVersion = '0.3'
+    espressoVersion = '2.2'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
+        classpath 'com.android.tools.build:gradle:1.4.0-beta3'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+    }
+}
+
+dependencies {
+    implementation 'org.connectbot:sshlib:2.2.2'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.assertj:assertj-core:1.7.0'
+    testImplementation('org.robolectric:robolectric:3.0') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+}
 
 android {
     compileSdkVersion 26
@@ -6,34 +40,112 @@ android {
         applicationId "org.codepunks.moshbot"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 101
+        versionName "1.0-a1"
+        testApplicationId "org.moshbot.tests"
+        testInstrumentationRunner "org.mostbot.FixJacocoTestRunner"
+        multiDexEnabled true
         externalNativeBuild {
             cmake {
                 cppFlags ""
             }
         }
     }
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+        implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
+        implementation "com.android.support:support-v4:$supportLibraryVersion"
+        implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+        implementation "com.android.support:design:$supportLibraryVersion"
+        implementation "com.android.support:support-core-utils:$supportLibraryVersion"
+        implementation "com.android.support:support-core-ui:$supportLibraryVersion"
+
+        androidTestImplementation("com.android.support.test:runner:$testRunnerVersion") {
+            exclude module: "support-annotations"
+        }
+        androidTestImplementation("com.android.support.test:rules:$testRunnerVersion") {
+            exclude module: "support-annotations"
+        }
+        androidTestImplementation("com.android.support.test.espresso:espresso-core:$espressoVersion") {
+            exclude module: "support-annotations"
+        }
+        androidTestImplementation("com.android.support.test.espresso:espresso-intents:$espressoVersion") {
+            exclude module: "support-annotations"
+        }
+        androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
+            exclude module: 'support-annotations'
+            exclude module: 'support-v4'
+            exclude module: 'support-v13'
+            exclude module: 'recyclerview-v7'
+        }
+}
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (project.hasProperty('keystorePassword')) {
+                //noinspection GroovyAssignabilityCheck
+                signingConfig signingConfigs.release
+            }
         }
+        debug {
+            applicationIdSuffix ".debug"
+            testCoverageEnabled true
+        }
+    }
+    lintOptions {
+        abortOnError false
+        lintConfig file('lint.xml')
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'LICENSE.txt'
     }
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
         }
     }
+    signingConfigs {
+        if (project.hasProperty('keystorePassword')) {
+            release {
+                storeFile file(property('keystoreFile'))
+                storePassword property('keystorePassword')
+                keyAlias property('keystoreAlias')
+                keyPassword property('keystorePassword')
+            }
+        }
+    }
+    buildToolsVersion '26.0.2'
 }
 
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'org.connectbot:sshlib:2.2.5'
+def getGitDescription = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--dirty'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (ignored) {
+        return null;
+    }
+}
+
+// Insert the build number into strings.xml
+android.applicationVariants.all { variant ->
+    variant.mergeResources.doLast{
+        ext.env = System.getenv()
+        def buildNumber = getGitDescription()
+        if (buildNumber != null) {
+            File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
+            String content = valuesFile.getText('UTF-8')
+            content = content.replaceAll(/\(working copy\)/, buildNumber)
+            valuesFile.write(content, 'UTF-8')
+        }
+    }
 }
